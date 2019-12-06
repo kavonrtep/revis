@@ -1,0 +1,67 @@
+#+TITLE: Some utilities for visualization of RepeatExplorer output
+
+* Visualization of comparative clustering
+
+
+Visualization can be created using two output files from RepeatExplorer pipeline:
+
+ ~CLUSTER_TABLE.csv~ contains automatic annotation, information about cluster size and total number of reads used for analysis:
+
+Example of ~CLUSTER_TABLE.csv~:
+
+#+begin_example 
+"Number_of_reads_in_clusters"	3002
+"Number_of_clusters"	895
+"Number_of_superclusters"	895
+"Number_of_singlets"	6998
+"Number_of_analyzed_reads"	10000
+
+"Cluster"	"Supercluster"	"Size"	"Size_adjusted"	"Automatic_classification"	"TAREAN_classification"	"Manual_classification"
+1	1	61	61	"All"	"Other"
+2	2	59	59	"All/repeat/satellite"	"Putative satellites (high confidence)"
+3	3	45	45	"All/repeat/satellite"	"Putative satellites (low confidence)"
+4	4	38	38	"All"	"Other"
+5	5	32	32	"All"	"Other"
+6	6	28	28	"All"	"Other"
+7	7	25	25	"All"	"Other"
+8	8	24	24	"All"	"Other"
+9	9	23	23	"All"	"Other"
+10	10	22	22	"All/repeat/mobile_element/Class_I/LTR/Ty3_gypsy/non-chromovirus/OTA/Tat/Ogre"	"Other"
+11	11	20	20	"All"	"Other"
+12	12	20	20	"All"	"Other"
+#+end_example
+In the output from RepeatExplorer, last column(Manual annotation) is empty - this column is supposed to be completed manually!
+
+Composition of clusters is specified in tab delimited file ~COMPARATIVE_ANALYSIS_COUNTS.csv~ file:
+#+begin_example
+# Total counts:		2544	2522	2494	2440
+#
+"cluster"	"supercluster"	"LAS"	"PFL"	"PST"	"VML"
+1	1	61	0	0	0
+2	2	0	23	36	0
+3	3	45	0	0	0
+4	4	0	0	0	38
+5	5	32	0	0	0
+6	6	0	13	15	0
+...
+#+end_example
+
+To create visualization run the following command (using example data):
+#+begin_src bash
+  ./plot_comparative_clustering_summary.R \
+      --cluster_table=example_data/example1_CLUSTER_TABLE.csv \
+      --comparative_counts=example_data/example1_COMPARATIVE_ANALYSIS_COUNTS.csv \
+      --output=figs/example1.pdf
+#+end_src
+
+#+RESULTS:
+| $cluster_table      |                                                       |
+| [1]                 | example_data/example1_CLUSTER_TABLE.csv               |
+| $comparative_counts |                                                       |
+| [1]                 | example_data/example1_COMPARATIVE_ANALYSIS_COUNTS.csv |
+| $output             |                                                       |
+| [1]                 | figs/example1.pdf                                     |
+| $help               |                                                       |
+| [1]                 | FALSE                                                 |
+
+
