@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-10 Út 16:16 -->
+<!-- 2019-12-10 Út 21:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Some utilities for visualization of RepeatExplorer output</title>
@@ -198,7 +198,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2019 Free Software Foundation, Inc.
+Copyright (C) 2012-2018 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -247,10 +247,16 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org982e953">1. Requirements</a></li>
-<li><a href="#org1712822">2. Visualization of comparative clustering</a>
+<li><a href="#orgf9927ce">1. Requirements</a></li>
+<li><a href="#org986add6">2. Visualization of comparative clustering</a>
 <ul>
-<li><a href="#orgb3ff5eb">2.1. Visualization examples:</a></li>
+<li><a href="#org9f73900">2.1. Visualization examples:</a>
+<ul>
+<li><a href="#org4e687a0">2.1.1. Example 1</a></li>
+<li><a href="#org09d8c67">2.1.2. Example 2</a></li>
+<li><a href="#org29aa2e2">2.1.3. Example 3</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -260,8 +266,8 @@ for the JavaScript code in this tag.
 Utilities  for visualization of RepeatExplorer2 outputs
 </p>
 
-<div id="outline-container-org982e953" class="outline-2">
-<h2 id="org982e953"><span class="section-number-2">1</span> Requirements</h2>
+<div id="outline-container-orgf9927ce" class="outline-2">
+<h2 id="orgf9927ce"><span class="section-number-2">1</span> Requirements</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>R programming environment with optparse package is required. In Ubuntu based distribution this can be installed using:</li>
@@ -273,21 +279,22 @@ Utilities  for visualization of RepeatExplorer2 outputs
 </div>
 </div>
 
-<div id="outline-container-org1712822" class="outline-2">
-<h2 id="org1712822"><span class="section-number-2">2</span> Visualization of comparative clustering</h2>
+<div id="outline-container-org986add6" class="outline-2">
+<h2 id="org986add6"><span class="section-number-2">2</span> Visualization of comparative clustering</h2>
 <div class="outline-text-2" id="text-2">
 <p>
-Visualization can be created using two output files from RepeatExplorer pipeline:
+Visualization can be created with script <code>plot_comparative_clustering_summary.R</code>
+using two output files from RepeatExplorer pipeline:
 </p>
 
 <p>
-File  <code>CLUSTER_TABLE.csv</code> contains automatic annotation, information about cluster sizes and the total number of reads used for analysis:
+File  <code>CLUSTER_TABLE.csv</code> contains automatic annotation, information about
+cluster sizes and the total number of reads used for analysis:
 </p>
 
 <p>
 Example of <code>CLUSTER_TABLE.csv</code>:
 </p>
-
 <pre class="example">
 "Number_of_reads_in_clusters"	3002
 "Number_of_clusters"	895
@@ -310,7 +317,10 @@ Example of <code>CLUSTER_TABLE.csv</code>:
 12	12	20	20	"All"	"Other"
 </pre>
 <p>
-In the output file from RepeatExplorer pipeline,the last column (Final<sub>annotation</sub>) is empty - <b>this column is supposed to be completed manually</b>!
+In the output file from RepeatExplorer pipeline, the last column
+(<i>Final<sub>annotation</sub></i>) is empty - <b>this column is supposed to be completed
+manually</b>! Visualization is created based on Automatic<sub>annotation</sub> and
+Final<sub>annotation</sub> (if provided). 
 </p>
 
 <p>
@@ -328,47 +338,43 @@ Species specific composition of clusters is provided in tab delimited file <code
 6	6	0	13	15	0
 ...
 </pre>
-
-<p>
-If you want to normalize visualization of repeat abundances, you have to provide tab delimited file with genome sizes for individual species in comparative analysis. 
-Genome sizes can be provided in any units, just make sure that the units are same for all samples. Code for individual species must be the same as in <code>COMPARATIVE_ANALYSIS_COUNTS.csv</code> file
-</p>
-
-<p>
-Example of file with with genome sizes:
-</p>
-<pre class="example">
-PFL 4.69
-PST 4.36
-VML 8.07
-LAS 6.52
-</pre>
 </div>
 
-<div id="outline-container-orgb3ff5eb" class="outline-3">
-<h3 id="orgb3ff5eb"><span class="section-number-3">2.1</span> Visualization examples:</h3>
+
+<div id="outline-container-org9f73900" class="outline-3">
+<h3 id="org9f73900"><span class="section-number-3">2.1</span> Visualization examples:</h3>
 <div class="outline-text-3" id="text-2-1">
+</div>
+<div id="outline-container-org4e687a0" class="outline-4">
+<h4 id="org4e687a0"><span class="section-number-4">2.1.1</span> Example 1</h4>
+<div class="outline-text-4" id="text-2-1-1">
 <p>
 Simple visualization without genome size normalization:
 </p>
 <div class="org-src-container">
 <pre class="src src-bash">./plot_comparative_clustering_summary.R <span style="color: #008000;">\</span>
-    --cluster_table=example_data/example1_CLUSTER_TABLE.csv <span style="color: #008000;">\</span>
-    --comparative_counts=example_data/example1_COMPARATIVE_ANALYSIS_COUNTS.csv <span style="color: #008000;">\</span>
+    --cluster_table=example_data/example_1_CLUSTER_TABLE.csv <span style="color: #008000;">\</span>
+    --comparative_counts=example_data/example_1_COMPARATIVE_ANALYSIS_COUNTS.csv <span style="color: #008000;">\</span>
     --output=figs/example1.pdf <span style="color: #008000;">\</span>
 </pre>
 </div>
 
-
-<div class="figure">
-<p><img src="./figs/example1.png" alt="example1.png" />
+<p>
+<img src="./figs/example1.png" alt="example1.png" />
+Blocks show the proportion of species within the clusters. Barplot shows the
+total cluster sizes. By default maximum 10 annotated categories are colored and
+shown on legend. This number of colored categories can be specified by option <code>-N</code>
 </p>
-<p><span class="figure-number">Figure 1: </span>Simple visualization of comparative analysis, blocks show the proportion of species within the clusters. Barplot shows the total cluster sizes.</p>
+</div>
 </div>
 
-
+<div id="outline-container-org09d8c67" class="outline-4">
+<h4 id="org09d8c67"><span class="section-number-4">2.1.2</span> Example 2</h4>
+<div class="outline-text-4" id="text-2-1-2">
 <p>
-Example of visualization with and without organele and contaminated clusters:
+It is possible to create visualization based on the nuclear genomic sequences only..
+Two images below show the visualization with and without organele and
+contaminated clusters (using option <code>-n</code>). 
 </p>
 <div class="org-src-container">
 <pre class="src src-bash"><span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">organel and contamination included</span>
@@ -387,24 +393,27 @@ Example of visualization with and without organele and contaminated clusters:
 </pre>
 </div>
 
-
-<div class="figure">
-<p><img src="./figs/example_with_contamination-0.png" alt="example_with_contamination-0.png" />
+<p>
+<img src="./figs/example_with_contamination-0.png" alt="example_with_contamination-0.png" />
+The clusters with plastid are included.
 </p>
-<p><span class="figure-number">Figure 2: </span>Example of visualization - clusters with plastid are included.</p>
-</div>
 
-
-<div class="figure">
-<p><img src="./figs/example_with_nuclear_only-0.png" alt="example_with_nuclear_only-0.png" />
-</p>
-<p><span class="figure-number">Figure 3: </span>Example of visualization - clusters with plastid are removed</p>
-</div>
 
 
 <p>
-If you want to visualize genomic abundances of repetitive sequences, you must provide also tab delimited file with genome sizes of analyzed species 
-in the folowing format:
+<img src="./figs/example_nuclear_only-0.png" alt="example_nuclear_only-0.png" />
+The clusters annotated as plastid are removed
+</p>
+</div>
+</div>
+
+<div id="outline-container-org29aa2e2" class="outline-4">
+<h4 id="org29aa2e2"><span class="section-number-4">2.1.3</span> Example 3</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+If you want to visualize genomic abundances of repetitive sequences, you must
+provide also tab delimited file with genome sizes of analyzed species in the
+folowing format:
 </p>
 <pre class="example">
 VCR 2.9
@@ -412,30 +421,28 @@ VVL 2.04
 VGR 3.78
 </pre>
 
-
 <p>
-Example command to visualize genomic abundances:
+Example command to visualize genomic abundances, option <code>-g</code> is used to specify
+file with genome sizes:
 </p>
 <div class="org-src-container">
 <pre class="src src-bash">./plot_comparative_clustering_summary.R <span style="color: #008000;">\</span>
     --cluster_table=example_data/example_2_CLUSTER_TABLE.csv <span style="color: #008000;">\</span>
     --comparative_counts=example_data/example_2_COMPARATIVE_ANALYSIS_COUNTS.csv <span style="color: #008000;">\</span>
-    --number_of_colors <span style="color: #D0372D;">10</span>  -g example_data/example_2_GS.csv<span style="color: #008000;">\</span>
+    --number_of_colors <span style="color: #D0372D;">10</span>  -g example_data/example_2_GS.csv <span style="color: #008000;">\</span>
     --output=figs/example_genomic_abundances.pdf
 
 </pre>
 </div>
 
 <p>
-Note that if option <code>-g</code> is used, non-nuclear sequences are automatically removed.
+Note that if option <code>-g</code> is used, non-nuclear sequences are always removed.
 </p>
 
-
-
-<div class="figure">
-<p><img src="./figs/example_genomic_abundances-0.png" alt="example_genomic_abundances-0.png" />
+<p>
+<img src="./figs/example_genomic_abundances-0.png" alt="example_genomic_abundances-0.png" />
+Size of block is directly proportional to the amount of repeat per nucleus..
 </p>
-<p><span class="figure-number">Figure 4: </span>Genomic abundance - size of block is directly proportional to the amount of repeat per 1C</p>
 </div>
 </div>
 </div>
@@ -443,7 +450,7 @@ Note that if option <code>-g</code> is used, non-nuclear sequences are automatic
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: petr</p>
-<p class="date">Created: 2019-12-10 Út 16:16</p>
+<p class="date">Created: 2019-12-10 Út 21:49</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

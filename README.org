@@ -9,12 +9,13 @@ sudo apt-get install r-base-core r-cran-optparse
 
 * Visualization of comparative clustering
 
-Visualization can be created using two output files from RepeatExplorer pipeline:
+Visualization can be created with script =plot_comparative_clustering_summary.R=
+using two output files from RepeatExplorer pipeline:
 
-File  ~CLUSTER_TABLE.csv~ contains automatic annotation, information about cluster sizes and the total number of reads used for analysis:
+File  ~CLUSTER_TABLE.csv~ contains automatic annotation, information about
+cluster sizes and the total number of reads used for analysis:
 
 Example of ~CLUSTER_TABLE.csv~:
-
 #+begin_example 
 "Number_of_reads_in_clusters"	3002
 "Number_of_clusters"	895
@@ -36,7 +37,10 @@ Example of ~CLUSTER_TABLE.csv~:
 11	11	20	20	"All"	"Other"
 12	12	20	20	"All"	"Other"
 #+end_example
-In the output file from RepeatExplorer pipeline,the last column (Final_annotation) is empty - *this column is supposed to be completed manually*!
+In the output file from RepeatExplorer pipeline, the last column
+(/Final_annotation/) is empty - *this column is supposed to be completed
+manually*! Visualization is created based on Automatic_annotation and
+Final_annotation (if provided). 
 
 Species specific composition of clusters is provided in tab delimited file ~COMPARATIVE_ANALYSIS_COUNTS.csv~ file:
 #+begin_example
@@ -52,37 +56,32 @@ Species specific composition of clusters is provided in tab delimited file ~COMP
 ...
 #+end_example
 
-If you want to normalize visualization of repeat abundances, you have to provide tab delimited file with genome sizes for individual species in comparative analysis. 
-Genome sizes can be provided in any units, just make sure that the units are same for all samples. Code for individual species must be the same as in ~COMPARATIVE_ANALYSIS_COUNTS.csv~ file
-
-Example of file with with genome sizes:
-#+begin_example
-PFL 4.69
-PST 4.36
-VML 8.07
-LAS 6.52
-#+end_example
 
 ** Visualization examples:
-
+*** Example 1
 Simple visualization without genome size normalization:
-#+begin_src bash :results output silent
+#+begin_src bash :results output silent :tangle yes
   ./plot_comparative_clustering_summary.R \
-      --cluster_table=example_data/example1_CLUSTER_TABLE.csv \
-      --comparative_counts=example_data/example1_COMPARATIVE_ANALYSIS_COUNTS.csv \
+      --cluster_table=example_data/example_1_CLUSTER_TABLE.csv \
+      --comparative_counts=example_data/example_1_COMPARATIVE_ANALYSIS_COUNTS.csv \
       --output=figs/example1.pdf \
 #+end_src
 
-#+begin_src bash :exports (when (eq org-export-current-backend 'html) "none") :results output silent
+#+begin_src bash :exports none :results output silent :tangle yes
 convert -density 200 figs/example1.pdf figs/example1.png
 #+end_src
 
-#+CAPTION: Simple visualization of comparative analysis, blocks show the proportion of species within the clusters. Barplot shows the total cluster sizes.
+
 [[./figs/example1.png]]
+Blocks show the proportion of species within the clusters. Barplot shows the
+total cluster sizes. By default maximum 10 annotated categories are colored and
+shown on legend. This number of colored categories can be specified by option =-N=
 
-
-Example of visualization with and without organele and contaminated clusters:
-#+begin_src bash :results output silent
+*** Example 2
+It is possible to create visualization based on the nuclear genomic sequences only..
+Two images below show the visualization with and without organele and
+contaminated clusters (using option =-n=). 
+#+begin_src bash :results output silent :tangle yes
 # organel and contamination included
   ./plot_comparative_clustering_summary.R \
       --cluster_table=example_data/example_2_CLUSTER_TABLE.csv \
@@ -98,29 +97,33 @@ Example of visualization with and without organele and contaminated clusters:
 
 #+end_src
 
-#+begin_src bash :exports (when (eq org-export-current-backend 'html) "none") :results output silent
+#+begin_src bash :exports none :results output silent :tangle yes
 convert -density 200 figs/example_with_contamination.pdf figs/example_with_contamination.png
 convert -density 200 figs/example_nuclear_only.pdf figs/example_nuclear_only.png
 #+end_src
 
-#+CAPTION: Example of visualization - clusters with plastid are included.
+The clusters with plastid are included:
 [[./figs/example_with_contamination-0.png]]
 
-#+CAPTION: Example of visualization - clusters with plastid are removed
-[[./figs/example_with_nuclear_only-0.png]]
 
 
-If you want to visualize genomic abundances of repetitive sequences, you must provide also tab delimited file with genome sizes of analyzed species 
-in the folowing format:
+The clusters annotated as plastid are removed:
+[[./figs/example_nuclear_only-0.png]]
+
+
+*** Example 3
+If you want to visualize genomic abundances of repetitive sequences, you must
+provide also tab delimited file with genome sizes of analyzed species in the
+folowing format:
 #+begin_example
 VCR 2.9
 VVL 2.04
 VGR 3.78
 #+end_example
 
-
-Example command to visualize genomic abundances:
-#+begin_src bash  :results output silent
+Example command to visualize genomic abundances, option =-g= is used to specify
+file with genome sizes:
+#+begin_src bash  :results output silent :tangle yes
   ./plot_comparative_clustering_summary.R \
       --cluster_table=example_data/example_2_CLUSTER_TABLE.csv \
       --comparative_counts=example_data/example_2_COMPARATIVE_ANALYSIS_COUNTS.csv \
@@ -129,12 +132,13 @@ Example command to visualize genomic abundances:
 
 #+end_src
 
-#+begin_src bash :exports (when (eq org-export-current-backend 'html) "none") :results output silent
+#+begin_src bash :exports none :results output silent :tangle yes
 convert -density 200 figs/example_genomic_abundances.pdf figs/example_genomic_abundances.png
 #+end_src
 
-Note that if option =-g= is used, non-nuclear sequences are automatically removed.
+Note that if option =-g= is used, non-nuclear sequences are always removed.
 
-
-#+CAPTION:Genomic abundance - size of block is directly proportional to the amount of repeat per 1C
 [[./figs/example_genomic_abundances-0.png]]
+Size of block is directly proportional to the amount of repeat per nucleus..
+
+
