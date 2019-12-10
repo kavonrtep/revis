@@ -1,0 +1,450 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2019-12-10 Út 16:16 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Some utilities for visualization of RepeatExplorer output</title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="petr" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<h1 class="title">Some utilities for visualization of RepeatExplorer output</h1>
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org982e953">1. Requirements</a></li>
+<li><a href="#org1712822">2. Visualization of comparative clustering</a>
+<ul>
+<li><a href="#orgb3ff5eb">2.1. Visualization examples:</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+Utilities  for visualization of RepeatExplorer2 outputs
+</p>
+
+<div id="outline-container-org982e953" class="outline-2">
+<h2 id="org982e953"><span class="section-number-2">1</span> Requirements</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li>R programming environment with optparse package is required. In Ubuntu based distribution this can be installed using:</li>
+</ul>
+<div class="org-src-container">
+<pre class="src src-bash">sudo apt-get install r-base-core r-cran-optparse
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org1712822" class="outline-2">
+<h2 id="org1712822"><span class="section-number-2">2</span> Visualization of comparative clustering</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+Visualization can be created using two output files from RepeatExplorer pipeline:
+</p>
+
+<p>
+File  <code>CLUSTER_TABLE.csv</code> contains automatic annotation, information about cluster sizes and the total number of reads used for analysis:
+</p>
+
+<p>
+Example of <code>CLUSTER_TABLE.csv</code>:
+</p>
+
+<pre class="example">
+"Number_of_reads_in_clusters"	3002
+"Number_of_clusters"	895
+"Number_of_superclusters"	895
+"Number_of_singlets"	6998
+"Number_of_analyzed_reads"	10000
+
+"Cluster"	"Supercluster"	"Size"	"Size_adjusted"	"Automatic_annotation"	"TAREAN_classification"	"Final_annotation"
+1	1	61	61	"All"	"Other"
+2	2	59	59	"All/repeat/satellite"	"Putative satellites (high confidence)"
+3	3	45	45	"All/repeat/satellite"	"Putative satellites (low confidence)"
+4	4	38	38	"All"	"Other"
+5	5	32	32	"All"	"Other"
+6	6	28	28	"All"	"Other"
+7	7	25	25	"All"	"Other"
+8	8	24	24	"All"	"Other"
+9	9	23	23	"All"	"Other"
+10	10	22	22	"All/repeat/mobile_element/Class_I/LTR/Ty3_gypsy/non-chromovirus/OTA/Tat/Ogre"	"Other"
+11	11	20	20	"All"	"Other"
+12	12	20	20	"All"	"Other"
+</pre>
+<p>
+In the output file from RepeatExplorer pipeline,the last column (Final<sub>annotation</sub>) is empty - <b>this column is supposed to be completed manually</b>!
+</p>
+
+<p>
+Species specific composition of clusters is provided in tab delimited file <code>COMPARATIVE_ANALYSIS_COUNTS.csv</code> file:
+</p>
+<pre class="example">
+# Total counts:		2544	2522	2494	2440
+#
+"cluster"	"supercluster"	"LAS"	"PFL"	"PST"	"VML"
+1	1	61	0	0	0
+2	2	0	23	36	0
+3	3	45	0	0	0
+4	4	0	0	0	38
+5	5	32	0	0	0
+6	6	0	13	15	0
+...
+</pre>
+
+<p>
+If you want to normalize visualization of repeat abundances, you have to provide tab delimited file with genome sizes for individual species in comparative analysis. 
+Genome sizes can be provided in any units, just make sure that the units are same for all samples. Code for individual species must be the same as in <code>COMPARATIVE_ANALYSIS_COUNTS.csv</code> file
+</p>
+
+<p>
+Example of file with with genome sizes:
+</p>
+<pre class="example">
+PFL 4.69
+PST 4.36
+VML 8.07
+LAS 6.52
+</pre>
+</div>
+
+<div id="outline-container-orgb3ff5eb" class="outline-3">
+<h3 id="orgb3ff5eb"><span class="section-number-3">2.1</span> Visualization examples:</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Simple visualization without genome size normalization:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">./plot_comparative_clustering_summary.R <span style="color: #008000;">\</span>
+    --cluster_table=example_data/example1_CLUSTER_TABLE.csv <span style="color: #008000;">\</span>
+    --comparative_counts=example_data/example1_COMPARATIVE_ANALYSIS_COUNTS.csv <span style="color: #008000;">\</span>
+    --output=figs/example1.pdf <span style="color: #008000;">\</span>
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="./figs/example1.png" alt="example1.png" />
+</p>
+<p><span class="figure-number">Figure 1: </span>Simple visualization of comparative analysis, blocks show the proportion of species within the clusters. Barplot shows the total cluster sizes.</p>
+</div>
+
+
+<p>
+Example of visualization with and without organele and contaminated clusters:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash"><span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">organel and contamination included</span>
+  ./plot_comparative_clustering_summary.R <span style="color: #008000;">\</span>
+      --cluster_table=example_data/example_2_CLUSTER_TABLE.csv <span style="color: #008000;">\</span>
+      --comparative_counts=example_data/example_2_COMPARATIVE_ANALYSIS_COUNTS.csv <span style="color: #008000;">\</span>
+      --number_of_colors <span style="color: #D0372D;">10</span>  <span style="color: #008000;">\</span>
+      --output=figs/example_with_contamination.pdf
+<span style="color: #8D8D84;"># </span><span style="color: #8D8D84; font-style: italic;">clusters containing organelle and contamination were removed (option -n)</span>
+  ./plot_comparative_clustering_summary.R <span style="color: #008000;">\</span>
+      --cluster_table=example_data/example_2_CLUSTER_TABLE.csv <span style="color: #008000;">\</span>
+      --comparative_counts=example_data/example_2_COMPARATIVE_ANALYSIS_COUNTS.csv <span style="color: #008000;">\</span>
+      --number_of_colors <span style="color: #D0372D;">10</span>  -n <span style="color: #008000;">\</span>
+      --output=figs/example_nuclear_only.pdf
+
+</pre>
+</div>
+
+
+<div class="figure">
+<p><img src="./figs/example_with_contamination-0.png" alt="example_with_contamination-0.png" />
+</p>
+<p><span class="figure-number">Figure 2: </span>Example of visualization - clusters with plastid are included.</p>
+</div>
+
+
+<div class="figure">
+<p><img src="./figs/example_with_nuclear_only-0.png" alt="example_with_nuclear_only-0.png" />
+</p>
+<p><span class="figure-number">Figure 3: </span>Example of visualization - clusters with plastid are removed</p>
+</div>
+
+
+<p>
+If you want to visualize genomic abundances of repetitive sequences, you must provide also tab delimited file with genome sizes of analyzed species 
+in the folowing format:
+</p>
+<pre class="example">
+VCR 2.9
+VVL 2.04
+VGR 3.78
+</pre>
+
+
+<p>
+Example command to visualize genomic abundances:
+</p>
+<div class="org-src-container">
+<pre class="src src-bash">./plot_comparative_clustering_summary.R <span style="color: #008000;">\</span>
+    --cluster_table=example_data/example_2_CLUSTER_TABLE.csv <span style="color: #008000;">\</span>
+    --comparative_counts=example_data/example_2_COMPARATIVE_ANALYSIS_COUNTS.csv <span style="color: #008000;">\</span>
+    --number_of_colors <span style="color: #D0372D;">10</span>  -g example_data/example_2_GS.csv<span style="color: #008000;">\</span>
+    --output=figs/example_genomic_abundances.pdf
+
+</pre>
+</div>
+
+<p>
+Note that if option <code>-g</code> is used, non-nuclear sequences are automatically removed.
+</p>
+
+
+
+<div class="figure">
+<p><img src="./figs/example_genomic_abundances-0.png" alt="example_genomic_abundances-0.png" />
+</p>
+<p><span class="figure-number">Figure 4: </span>Genomic abundance - size of block is directly proportional to the amount of repeat per 1C</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: petr</p>
+<p class="date">Created: 2019-12-10 Út 16:16</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

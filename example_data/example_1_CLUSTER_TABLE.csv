@@ -1,0 +1,19 @@
+"Number_of_reads_in_clusters"	3002
+"Number_of_clusters"	895
+"Number_of_superclusters"	895
+"Number_of_singlets"	6998
+"Number_of_analyzed_reads"	10000
+
+"Cluster"	"Supercluster"	"Size"	"Size_adjusted"	"Automatic_annotation"	"TAREAN_annotation"	"Final_annotation"
+1	1	61	61	"All"	"Other"	""
+2	2	59	59	"All/repeat/satellite"	"Putative satellites (high confidence)"	""
+3	3	45	45	"All/repeat/satellite"	"Putative satellites (low confidence)"	""
+4	4	38	38	"All"	"Other"	""
+5	5	32	32	"All"	"Other"	""
+6	6	28	28	"All"	"Other"	""
+7	7	25	25	"All"	"Other"	""
+8	8	24	24	"All"	"Other"	""
+9	9	23	23	"All"	"Other"	""
+10	10	22	22	"All/repeat/mobile_element/Class_I/LTR/Ty3_gypsy/non-chromovirus/OTA/Tat/Ogre"	"Other"	""
+11	11	20	20	"All"	"Other"	""
+12	12	20	20	"All"	"Other"	""
