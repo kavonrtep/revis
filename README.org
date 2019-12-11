@@ -39,7 +39,7 @@ Example of ~CLUSTER_TABLE.csv~:
 #+end_example
 In the output file from RepeatExplorer pipeline, the last column
 =Final_annotation= is empty - *this column is supposed to be completed manually*! Visualization is created based on the =Final_annotation= column. If the
-data in =Final_annotation= is missing =Automatic_annotation= column is used
+data in =Final_annotation= is missing =Automatic_annotation= column is used instead.
 
 
 Species specific composition of clusters is provided in tab delimited file ~COMPARATIVE_ANALYSIS_COUNTS.csv~ file:
@@ -73,12 +73,14 @@ convert -density 200 figs/example1.pdf figs/example1.png
 
 
 [[./figs/example1.png]]
+
 Blocks show the proportion of species within the clusters. Barplot shows the
-total cluster sizes. By default maximum 10 annotated categories are colored and
-shown on legend. This number of colored categories can be specified by option =-N=
+total cluster sizes. By default, maximum 10 most abundant annotated categories are colored and
+shown on legend. The number of colored categories can be specified by option
+=-N=, maximum number of colors is 20.
 
 *** Example 2
-It is possible to create visualization based on the nuclear genomic sequences only..
+It is possible to create visualization based on the nuclear genomic sequences only.
 Two images below show the visualization with and without organele and
 contaminated clusters (using option =-n=). 
 #+begin_src bash :results output silent :tangle yes
@@ -139,6 +141,54 @@ convert -density 200 figs/example_genomic_abundances.pdf figs/example_genomic_ab
 Note that if option =-g= is used, non-nuclear sequences are always removed.
 
 [[./figs/example_genomic_abundances.png]]
-Size of block is directly proportional to the amount of repeat per nucleus..
+Size of block is directly proportional to the amount of repeat in nuclear DNA.
+
+** complete command line options:
+
+   #+begin_src bash :exports none :results value code 
+   ./plot_comparative_clustering_summary.R --help
+   #+end_src
+
+   #+begin_src bash
+   Usage: ./plot_comparative_clustering_summary.R [options]
+
+
+   Options:
+     -c CLUSTER_TABLE, --cluster_table=CLUSTER_TABLE
+       file from RepeatExplorer2 clustering - CLUSTER_TABLE.csv
+
+     -m COMPARATIVE_COUNTS, --comparative_counts=COMPARATIVE_COUNTS
+       file from RepeatExplorer2 output - COMPARATIVE_ANALYSIS_COUNTS.csv
+
+     -o OUTPUT, --output=OUTPUT
+       File name for output figures (pdf document)
+
+     -N NUMBER_OF_COLORS, --number_of_colors=NUMBER_OF_COLORS
+       Number of unique colors used from plotting (2-20, default is 10)
+
+     -g GENOME_SIZE, --genome_size=GENOME_SIZE
+       file from genome sizes of species provided in tab delimited file in the format:
+
+                      species_code1   GenomeSize1
+                      species_code2   GenomeSize2
+                      species_code3   GenomeSize3
+                      species_code4   GenomeSize4
+
+                   provide the same codes for species as in file COMPARATIVE_ANALYSIS_COUNTS.csv. The use of genome
+                   sizes file imply the --nuclear_only option.
+
+
+     -n, --nuclear_only
+       remove all non-nuclear sequences (organelle and contamination). 
+
+     -h, --help
+       Show this help message and exit
+
+
+   #+end_src
+
+
+
+
 
 

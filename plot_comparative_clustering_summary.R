@@ -114,7 +114,7 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1
 
   ## set size of pdf output
   wdth = (3 + N*0.03 ) * Xcoef
-  hgt = (2.2 + ncol(counts)*0.15) * Ycoef
+  hgt = (2.2 + ncol(counts)*0.20) * Ycoef
   ptsize = round((wdth*hgt)^(1/4))*5
 
   
@@ -144,7 +144,7 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1
     title_height = 0.5
     layout(matrix(c(0,0,0,3,0,2,0,3,0,1,0,3),ncol=4,byrow = TRUE),
            width=c(ploting_area_sides,ploting_area_width,ploting_area_sides, legend_width),
-           height=c(title_height, 3,ncol(M)*0.5))
+           height=c(title_height, 3,ncol(M)*0.8))
     par(xaxs='i', yaxs = 'i')
     par(las=2,mar=c(4,0,0,0),cex.axis=0.5)
     if (any(is.na(GS))){
@@ -207,7 +207,7 @@ option_list <- list(
               default="comparative_analysis_summary.pdf",
               help="File name for output figures (pdf document)"),
   make_option(c("-N", "--number_of_colors"), type="integer", default=10,
-              help="number of unqique color used from plotting"),
+              help="Number of unique colors used from plotting (2-20, default is 10)"),
 
   make_option(c("-g", "--genome_size"),default = NA,type = "character",
               help="file from genome sizes of species provided in tab delimited file in the format:
@@ -217,8 +217,8 @@ option_list <- list(
                    species_code3   GenomeSize3
                    species_code4   GenomeSize4
 
-                provide the same codes for species as in file COMPARATIVE_ANALYSIS_COUNTS.csv. If the genome
-                sizes are provided, --nuclear_only is used by default. 
+                provide the same codes for species as in file COMPARATIVE_ANALYSIS_COUNTS.csv. The use of genome
+                sizes file imply the --nuclear_only option.
     "),
   make_option(c("-n", "--nuclear_only"), default = FALSE, type="logical",
               action = "store_true",
