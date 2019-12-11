@@ -1,19 +1,22 @@
 #!/usr/bin/env Rscript
 library(optparse)
 
-get_color = function(classification){
+twenty_colors = c(
+  '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231',
+  '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe',
+  '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000',
+  '#aaffc3', '#808000', '#ffd8b1', '#000075', "#000000"
+)
+
+get_color = function(classification, size){
   ## 20 of unique colors, first is black
-  unique_colors = c("#000000",
-                    '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231',
-                    '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe',
-                    '#008080', '#e6beff', '#9a6324', '#fffac8', '#800000',
-                    '#aaffc3', '#808000', '#ffd8b1', '#000075'
-                    )[1:opt$number_of_colors]
+  unique_colors = twenty_colors[1:opt$number_of_colors]
   Ncol = length(unique_colors)
   ## rest wil be grey:
   grey_color = "#a9a9a9"
   ## unique repeats without All
-  unique_repeats = names(sort(table(classification[!classification %in% "All"]), decreasing = TRUE))
+  include = !classification %in% "All"
+  unique_repeats = names(c(sort(by(size[include], INDICES = classification[include], FUN = sum), decreasing = TRUE)))
   color_table = unique_colors[1:min(Ncol,length(unique_repeats))]
   names(color_table) = unique_repeats[1:min(Ncol,length(unique_repeats))]
   color = rep(grey_color, length(classification))
@@ -34,11 +37,8 @@ make_legend = function(color){
   if ("Other" %in% description & length(description) > 1){
     description = c(description[! description %in% "Other"], description[description %in% "Other"])
   }
-
-  legend_info = list(name = gsub("All", "NA", description), color = names(description))
-
-  return(legend_info)
-
+  ord = order(factor(names(description), levels = twenty_colors))
+  legend_info = list(name = gsub("All", "NA", description)[ord], color = names(description)[ord])
 }
 
 plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1,Ycoef=1){
@@ -67,9 +67,9 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1
       input_read_counts_automatic = input_read_counts - colSums(counts[exclude,-c(1:2) , drop=FALSE])
     }
   }
-  color_auto = get_color(annot_automatic$Automatic_annotation)
+  color_auto = get_color(annot_automatic$Automatic_annotation, annot_automatic$Size)
   legend_info = make_legend(color_auto)
-  params = list(Automatic_classification = list(
+  params = list(Automatic_annotation = list(
                   color =  color_auto,
                   legend = legend_info,
                   counts = counts_automatic,
@@ -98,10 +98,10 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1
         }
       }
       ## append
-      color_manual = get_color(annot_manual$Final_annotation)
+      color_manual = get_color(annot_manual$Final_annotation, annot_manual$Size)
       legend_info_manual = make_legend(color_manual)
 
-      params$Manual_classification = list(
+      params$Final_annotation = list(
         color =  color_manual,
         legend = legend_info_manual,
         counts = counts_manual,
@@ -117,7 +117,17 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1
   hgt = (2.2 + ncol(counts)*0.15) * Ycoef
   ptsize = round((wdth*hgt)^(1/4))*5
 
+  
+
   pdf(output_file, width=wdth,height=hgt, pointsize = ptsize)  # was 50
+  ## originaly - printing of both automatic and final annotation
+  ## now - print only final_annotation if available
+  if  (length(params) == 2){
+    ## remove automatic
+    params$Automatic_annotation = NULL
+  }
+  ## 
+
   for (j in seq_along(params)){
     Nclust = nrow(params[[j]]$annot)
     ##prepare matrix for plotting
@@ -140,10 +150,10 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1
     if (any(is.na(GS))){
       rectMap(Mn2[ord1,ord2],scale.by='row',col=params[[j]]$color[ord1], grid=TRUE)
     }else{
+
       Mn3 = t(t(M) * (GS[colnames(M),] / params[[j]]$input_read_counts))[ord1,ord2]
-      print(Mn3)
+      ## rescale
       Mn3 = Mn3/max(Mn3)
-      print(Mn3)
 
       rectMap(Mn3,scale.by='none',col=params[[j]]$color[ord1], grid=TRUE)
     }
@@ -237,7 +247,3 @@ if (!is.na(opt$genome_size)){
 
 plot_rect_map(opt$comparative_counts, opt$cluster_table, opt$output, GS)
 
-## testing:
-cluster_annotation = "example_data/example1_CLUSTER_TABLE.csv"
-read_counts = "example_data/example1_COMPARATIVE_ANALYSIS_COUNTS.csv"
-output_file = "figs/test.pdf"

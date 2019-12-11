@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-10 Út 21:49 -->
+<!-- 2019-12-11 St 11:25 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Some utilities for visualization of RepeatExplorer output</title>
@@ -198,7 +198,7 @@
 @licstart  The following is the entire license notice for the
 JavaScript code in this tag.
 
-Copyright (C) 2012-2018 Free Software Foundation, Inc.
+Copyright (C) 2012-2019 Free Software Foundation, Inc.
 
 The JavaScript code in this tag is free software: you can
 redistribute it and/or modify it under the terms of the GNU
@@ -247,14 +247,14 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgf9927ce">1. Requirements</a></li>
-<li><a href="#org986add6">2. Visualization of comparative clustering</a>
+<li><a href="#org018aa4b">1. Requirements</a></li>
+<li><a href="#org1ff3842">2. Visualization of comparative clustering</a>
 <ul>
-<li><a href="#org9f73900">2.1. Visualization examples:</a>
+<li><a href="#orgd258f7b">2.1. Visualization examples:</a>
 <ul>
-<li><a href="#org4e687a0">2.1.1. Example 1</a></li>
-<li><a href="#org09d8c67">2.1.2. Example 2</a></li>
-<li><a href="#org29aa2e2">2.1.3. Example 3</a></li>
+<li><a href="#orgb7159e2">2.1.1. Example 1</a></li>
+<li><a href="#org6b89c34">2.1.2. Example 2</a></li>
+<li><a href="#org49d7ddd">2.1.3. Example 3</a></li>
 </ul>
 </li>
 </ul>
@@ -266,8 +266,8 @@ for the JavaScript code in this tag.
 Utilities  for visualization of RepeatExplorer2 outputs
 </p>
 
-<div id="outline-container-orgf9927ce" class="outline-2">
-<h2 id="orgf9927ce"><span class="section-number-2">1</span> Requirements</h2>
+<div id="outline-container-org018aa4b" class="outline-2">
+<h2 id="org018aa4b"><span class="section-number-2">1</span> Requirements</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>R programming environment with optparse package is required. In Ubuntu based distribution this can be installed using:</li>
@@ -279,8 +279,8 @@ Utilities  for visualization of RepeatExplorer2 outputs
 </div>
 </div>
 
-<div id="outline-container-org986add6" class="outline-2">
-<h2 id="org986add6"><span class="section-number-2">2</span> Visualization of comparative clustering</h2>
+<div id="outline-container-org1ff3842" class="outline-2">
+<h2 id="org1ff3842"><span class="section-number-2">2</span> Visualization of comparative clustering</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Visualization can be created with script <code>plot_comparative_clustering_summary.R</code>
@@ -318,10 +318,10 @@ Example of <code>CLUSTER_TABLE.csv</code>:
 </pre>
 <p>
 In the output file from RepeatExplorer pipeline, the last column
-(<i>Final<sub>annotation</sub></i>) is empty - <b>this column is supposed to be completed
-manually</b>! Visualization is created based on Automatic<sub>annotation</sub> and
-Final<sub>annotation</sub> (if provided). 
+<code>Final_annotation</code> is empty - <b>this column is supposed to be completed manually</b>! Visualization is created based on the <code>Final_annotation</code> column. If the
+data in <code>Final_annotation</code> is missing <code>Automatic_annotation</code> column is used
 </p>
+
 
 <p>
 Species specific composition of clusters is provided in tab delimited file <code>COMPARATIVE_ANALYSIS_COUNTS.csv</code> file:
@@ -341,12 +341,12 @@ Species specific composition of clusters is provided in tab delimited file <code
 </div>
 
 
-<div id="outline-container-org9f73900" class="outline-3">
-<h3 id="org9f73900"><span class="section-number-3">2.1</span> Visualization examples:</h3>
+<div id="outline-container-orgd258f7b" class="outline-3">
+<h3 id="orgd258f7b"><span class="section-number-3">2.1</span> Visualization examples:</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-org4e687a0" class="outline-4">
-<h4 id="org4e687a0"><span class="section-number-4">2.1.1</span> Example 1</h4>
+<div id="outline-container-orgb7159e2" class="outline-4">
+<h4 id="orgb7159e2"><span class="section-number-4">2.1.1</span> Example 1</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 Simple visualization without genome size normalization:
@@ -355,7 +355,7 @@ Simple visualization without genome size normalization:
 <pre class="src src-bash">./plot_comparative_clustering_summary.R <span style="color: #008000;">\</span>
     --cluster_table=example_data/example_1_CLUSTER_TABLE.csv <span style="color: #008000;">\</span>
     --comparative_counts=example_data/example_1_COMPARATIVE_ANALYSIS_COUNTS.csv <span style="color: #008000;">\</span>
-    --output=figs/example1.pdf <span style="color: #008000;">\</span>
+    --output=figs/example1.pdf
 </pre>
 </div>
 
@@ -368,8 +368,8 @@ shown on legend. This number of colored categories can be specified by option <c
 </div>
 </div>
 
-<div id="outline-container-org09d8c67" class="outline-4">
-<h4 id="org09d8c67"><span class="section-number-4">2.1.2</span> Example 2</h4>
+<div id="outline-container-org6b89c34" class="outline-4">
+<h4 id="org6b89c34"><span class="section-number-4">2.1.2</span> Example 2</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 It is possible to create visualization based on the nuclear genomic sequences only..
@@ -394,21 +394,22 @@ contaminated clusters (using option <code>-n</code>).
 </div>
 
 <p>
-<img src="./figs/example_with_contamination-0.png" alt="example_with_contamination-0.png" />
-The clusters with plastid are included.
+The clusters with plastid are included:
+<img src="./figs/example_with_contamination.png" alt="example_with_contamination.png" />
 </p>
 
 
 
 <p>
-<img src="./figs/example_nuclear_only-0.png" alt="example_nuclear_only-0.png" />
-The clusters annotated as plastid are removed
+The clusters annotated as plastid are removed:
+<img src="./figs/example_nuclear_only.png" alt="example_nuclear_only.png" />
 </p>
 </div>
 </div>
 
-<div id="outline-container-org29aa2e2" class="outline-4">
-<h4 id="org29aa2e2"><span class="section-number-4">2.1.3</span> Example 3</h4>
+
+<div id="outline-container-org49d7ddd" class="outline-4">
+<h4 id="org49d7ddd"><span class="section-number-4">2.1.3</span> Example 3</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <p>
 If you want to visualize genomic abundances of repetitive sequences, you must
@@ -440,7 +441,7 @@ Note that if option <code>-g</code> is used, non-nuclear sequences are always re
 </p>
 
 <p>
-<img src="./figs/example_genomic_abundances-0.png" alt="example_genomic_abundances-0.png" />
+<img src="./figs/example_genomic_abundances.png" alt="example_genomic_abundances.png" />
 Size of block is directly proportional to the amount of repeat per nucleus..
 </p>
 </div>
@@ -450,7 +451,7 @@ Size of block is directly proportional to the amount of repeat per nucleus..
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: petr</p>
-<p class="date">Created: 2019-12-10 Út 21:49</p>
+<p class="date">Created: 2019-12-11 St 11:25</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

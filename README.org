@@ -38,9 +38,9 @@ Example of ~CLUSTER_TABLE.csv~:
 12	12	20	20	"All"	"Other"
 #+end_example
 In the output file from RepeatExplorer pipeline, the last column
-(/Final_annotation/) is empty - *this column is supposed to be completed
-manually*! Visualization is created based on Automatic_annotation and
-Final_annotation (if provided). 
+=Final_annotation= is empty - *this column is supposed to be completed manually*! Visualization is created based on the =Final_annotation= column. If the
+data in =Final_annotation= is missing =Automatic_annotation= column is used
+
 
 Species specific composition of clusters is provided in tab delimited file ~COMPARATIVE_ANALYSIS_COUNTS.csv~ file:
 #+begin_example
@@ -64,7 +64,7 @@ Simple visualization without genome size normalization:
   ./plot_comparative_clustering_summary.R \
       --cluster_table=example_data/example_1_CLUSTER_TABLE.csv \
       --comparative_counts=example_data/example_1_COMPARATIVE_ANALYSIS_COUNTS.csv \
-      --output=figs/example1.pdf \
+      --output=figs/example1.pdf
 #+end_src
 
 #+begin_src bash :exports none :results output silent :tangle yes
@@ -103,12 +103,12 @@ convert -density 200 figs/example_nuclear_only.pdf figs/example_nuclear_only.png
 #+end_src
 
 The clusters with plastid are included:
-[[./figs/example_with_contamination-0.png]]
+[[./figs/example_with_contamination.png]]
 
 
 
 The clusters annotated as plastid are removed:
-[[./figs/example_nuclear_only-0.png]]
+[[./figs/example_nuclear_only.png]]
 
 
 *** Example 3
@@ -138,7 +138,7 @@ convert -density 200 figs/example_genomic_abundances.pdf figs/example_genomic_ab
 
 Note that if option =-g= is used, non-nuclear sequences are always removed.
 
-[[./figs/example_genomic_abundances-0.png]]
+[[./figs/example_genomic_abundances.png]]
 Size of block is directly proportional to the amount of repeat per nucleus..
 
 
