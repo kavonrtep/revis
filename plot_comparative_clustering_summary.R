@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
 library(optparse)
-
+## TODO - add scale to legend!
 twenty_colors = c(
   '#e6194b', '#3cb44b', '#ffe119', '#4363d8', '#f58231',
   '#911eb4', '#46f0f0', '#f032e6', '#bcf60c', '#fabebe',
@@ -41,7 +41,7 @@ make_legend = function(color){
   legend_info = list(name = gsub("All", "NA", description)[ord], color = names(description)[ord])
 }
 
-plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1,Ycoef=1){
+plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, RL, Xcoef=1,Ycoef=1){
   ## read_counts : correspond to COMPARATIVE_ANALYSIS_COUNTS.csv
   ## cluster annotation : CLUSTER_TABLE.csv
   counts = read.table(read_counts,header=TRUE,as.is=TRUE)
@@ -115,8 +115,10 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1
   ## set size of pdf output
   wdth = (3 + N*0.03 ) * Xcoef
   hgt = (2.2 + ncol(counts)*0.20) * Ycoef
+  if (!any(is.na(GS))){
+    hgt = hgt + ncol(counts)*0.20 * Ycoef
+  }
   ptsize = round((wdth*hgt)^(1/4))*5
-
   
 
   pdf(output_file, width=wdth,height=hgt, pointsize = ptsize)  # was 50
@@ -142,19 +144,32 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1
     ploting_area_sides = 1.5
     legend_width = 3
     title_height = 0.5
-    layout(matrix(c(0,0,0,3,0,2,0,3,0,1,0,3),ncol=4,byrow = TRUE),
-           width=c(ploting_area_sides,ploting_area_width,ploting_area_sides, legend_width),
-           height=c(title_height, 3,ncol(M)*0.8))
+    if (any(is.na(GS))){
+      layout(matrix(c(0,0,0,3,0,2,0,3,0,1,0,3),ncol=4,byrow = TRUE),
+             width=c(ploting_area_sides,ploting_area_width,ploting_area_sides, legend_width),
+             height=c(title_height, 3,ncol(M)*0.8))
+    }else{
+      ## extra row for legends
+
+      print(c(title_height, 3,ncol(M)*0.8),ncol(M)*0.3)
+      layout(matrix(c(0,0,0,3,0,2,0,3,0,1,0,3,0,0,0,4),ncol=4,byrow = TRUE),
+             width=c(ploting_area_sides,ploting_area_width,ploting_area_sides, legend_width),
+             height=c(title_height, 3,ncol(M)*0.8,ncol(M)*0.8 ))
+    }
+
+
     par(xaxs='i', yaxs = 'i')
     par(las=2,mar=c(4,0,0,0),cex.axis=0.5)
+
     if (any(is.na(GS))){
       rectMap(Mn2[ord1,ord2],scale.by='row',col=params[[j]]$color[ord1], grid=TRUE)
     }else{
-
+      # use genomic sizes
       Mn3 = t(t(M) * (GS[colnames(M),] / params[[j]]$input_read_counts))[ord1,ord2]
       ## rescale
+      print(Mn3)
+      MaxGS = max(Mn3)
       Mn3 = Mn3/max(Mn3)
-
       rectMap(Mn3,scale.by='none',col=params[[j]]$color[ord1], grid=TRUE)
     }
     par(las=2,mar=c(1,0,1,0), mgp = c(2,1,0))
@@ -165,10 +180,28 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, Xcoef=1
     legend("topleft", col= params[[j]]$legend$color, legend=params[[j]]$legend$name, pch=15, cex=0.7, bty="n", pt.cex=1)
   }
 
+  if (!any(is.na(GS))){
+    ## plot GS scale
+    par(xaxs='i', yaxs = 'i')
+    par(las=2,mar=c(4,0,0,1),cex.axis=0.5) # same par as recplot above to keep the scale
+    Mn3scale = Mn3
+    Mn3scale[,] = 0
+    colnames(Mn3scale)=rep("", ncol(Mn3scale))
+    rownames(Mn3scale)=rep("", nrow(Mn3scale))
+    Mn3scale[,1] = seq(0,1, length.out = nrow(Mn3))
+    rectMap(Mn3scale,scale.by='none',col="grey", grid=FALSE, boxlab="", draw_box=FALSE)
+    slabels = pretty(c(0,MaxGS), n = 10)
+    sat = slabels/MaxGS * nrow(Mn3scale)
+    axis(side=1, at= sat, labels = slabels, line = 0)
+    mtext(side = 1, text = "Repeat abundance \n(same units as provided genome sizes)", las=1, line=2.5,cex=0.4)
+    mtext(side = 2, text = "Rectangle height", las=1, line=2,cex=0.4, at=1)
+
+    axis(2, at=c(0.5, 1, 1.5), labels=c(0,0.5,1),line=0)
+  }
   st = dev.off()
 }
 
-rectMap=function(x,scale.by='row',col=1,xlab="",ylab="",grid=TRUE,axis_pos=c(1,4),cexx=NULL,cexy=NULL){
+rectMap=function(x,scale.by='row',col=1,xlab="",ylab="",grid=TRUE,axis_pos=c(1,4),boxlab = "Cluster Id", cexx=NULL,cexy=NULL, draw_box=TRUE){
   if (scale.by=='row'){
                                         #x=(x)/rowSums(x)
     x=(x)/apply(x,1,sum)
@@ -184,7 +217,7 @@ rectMap=function(x,scale.by='row',col=1,xlab="",ylab="",grid=TRUE,axis_pos=c(1,4
   axis(axis_pos[2],at=1:nc,labels=colnames(x),lty=0,tick=FALSE,las=2,line=0 ,hadj=0, cex.axis=0.7)
   axis(2,at=1:nc,labels=colnames(x),lty=0,tick=FALSE,las=2,line=0 ,hadj=1, cex.axis=0.7)
 
-  mtext(side = 1, "Cluster id", las=1, line = 3, cex = 0.5)
+  mtext(side = 1, boxlab, las=1, line = 3, cex = 0.5)
   line = 1.5 + log10(nr)
   #mtext(side = 2, "Proportions of individual samples", las =0, line = line, cex = 0.5)
   s=x/2
@@ -193,7 +226,9 @@ rectMap=function(x,scale.by='row',col=1,xlab="",ylab="",grid=TRUE,axis_pos=c(1,4
   if (grid){
     abline(v=0:(nr)+.5,h=0:(nc)+.5,lty=2,col="#60606030",lwd=0.2)
   }
-  box(col="#60606030",lty=2, lwd=0.2)
+  if(draw_box){
+    box(col="#60606030",lty=2, lwd=0.2)
+  }
 }
 
 option_list <- list( 
@@ -243,7 +278,8 @@ if (!is.na(opt$genome_size)){
   opt$nuclear_only=TRUE
 }else{
   GS = NA
+  RL = NA
 }
 
-plot_rect_map(opt$comparative_counts, opt$cluster_table, opt$output, GS)
+plot_rect_map(opt$comparative_counts, opt$cluster_table, opt$output, GS, RL)
 

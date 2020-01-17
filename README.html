@@ -3,12 +3,12 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2019-12-11 St 15:02 -->
+<!-- 2020-01-17 Pá 11:13 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Some utilities for visualization of RepeatExplorer output</title>
 <meta name="generator" content="Org mode" />
-<meta name="author" content="petr" />
+<meta name="author" content="Petr Novak" />
 <style type="text/css">
  <!--/*--><![CDATA[/*><!--*/
   .title  { text-align: center;
@@ -247,17 +247,17 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org38d10cc">1. Requirements</a></li>
-<li><a href="#orgf80d8d9">2. Visualization of comparative clustering</a>
+<li><a href="#org2c08df2">1. Requirements</a></li>
+<li><a href="#org36d88a4">2. Visualization of comparative clustering</a>
 <ul>
-<li><a href="#orge4f3125">2.1. Visualization examples:</a>
+<li><a href="#org93bce99">2.1. Visualization examples:</a>
 <ul>
-<li><a href="#org5e53a77">2.1.1. Example 1</a></li>
-<li><a href="#org188f77b">2.1.2. Example 2</a></li>
-<li><a href="#org6bd197d">2.1.3. Example 3</a></li>
+<li><a href="#orgba14f34">2.1.1. Example 1</a></li>
+<li><a href="#org9596a2d">2.1.2. Example 2</a></li>
+<li><a href="#org89300ae">2.1.3. Example 3</a></li>
 </ul>
 </li>
-<li><a href="#org19d80a9">2.2. complete command line options:</a></li>
+<li><a href="#org3e3de47">2.2. Complete command line options:</a></li>
 </ul>
 </li>
 </ul>
@@ -267,8 +267,8 @@ for the JavaScript code in this tag.
 Utilities  for visualization of RepeatExplorer2 outputs
 </p>
 
-<div id="outline-container-org38d10cc" class="outline-2">
-<h2 id="org38d10cc"><span class="section-number-2">1</span> Requirements</h2>
+<div id="outline-container-org2c08df2" class="outline-2">
+<h2 id="org2c08df2"><span class="section-number-2">1</span> Requirements</h2>
 <div class="outline-text-2" id="text-1">
 <ul class="org-ul">
 <li>R programming environment with optparse package is required. In Ubuntu based distribution this can be installed using:</li>
@@ -280,8 +280,8 @@ Utilities  for visualization of RepeatExplorer2 outputs
 </div>
 </div>
 
-<div id="outline-container-orgf80d8d9" class="outline-2">
-<h2 id="orgf80d8d9"><span class="section-number-2">2</span> Visualization of comparative clustering</h2>
+<div id="outline-container-org36d88a4" class="outline-2">
+<h2 id="org36d88a4"><span class="section-number-2">2</span> Visualization of comparative clustering</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 Visualization can be created with script <code>plot_comparative_clustering_summary.R</code>
@@ -342,12 +342,12 @@ Species specific composition of clusters is provided in tab delimited file <code
 </div>
 
 
-<div id="outline-container-orge4f3125" class="outline-3">
-<h3 id="orge4f3125"><span class="section-number-3">2.1</span> Visualization examples:</h3>
+<div id="outline-container-org93bce99" class="outline-3">
+<h3 id="org93bce99"><span class="section-number-3">2.1</span> Visualization examples:</h3>
 <div class="outline-text-3" id="text-2-1">
 </div>
-<div id="outline-container-org5e53a77" class="outline-4">
-<h4 id="org5e53a77"><span class="section-number-4">2.1.1</span> Example 1</h4>
+<div id="outline-container-orgba14f34" class="outline-4">
+<h4 id="orgba14f34"><span class="section-number-4">2.1.1</span> Example 1</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <p>
 Simple visualization without genome size normalization:
@@ -375,8 +375,8 @@ shown on legend. The number of colored categories can be specified by option
 </div>
 </div>
 
-<div id="outline-container-org188f77b" class="outline-4">
-<h4 id="org188f77b"><span class="section-number-4">2.1.2</span> Example 2</h4>
+<div id="outline-container-org9596a2d" class="outline-4">
+<h4 id="org9596a2d"><span class="section-number-4">2.1.2</span> Example 2</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <p>
 It is possible to create visualization based on the nuclear genomic sequences only.
@@ -415,8 +415,8 @@ The clusters annotated as plastid are removed:
 </div>
 
 
-<div id="outline-container-org6bd197d" class="outline-4">
-<h4 id="org6bd197d"><span class="section-number-4">2.1.3</span> Example 3</h4>
+<div id="outline-container-org89300ae" class="outline-4">
+<h4 id="org89300ae"><span class="section-number-4">2.1.3</span> Example 3</h4>
 <div class="outline-text-4" id="text-2-1-3">
 <p>
 If you want to visualize genomic abundances of repetitive sequences, you must
@@ -447,16 +447,21 @@ file with genome sizes:
 Note that if option <code>-g</code> is used, non-nuclear sequences are always removed.
 </p>
 
+
+<div class="figure">
+<p><img src="./figs/example_genomic_abundances.png" alt="example_genomic_abundances.png" />
+</p>
+</div>
+
 <p>
-<img src="./figs/example_genomic_abundances.png" alt="example_genomic_abundances.png" />
-Size of block is directly proportional to the amount of repeat in nuclear DNA.
+Size of block is directly proportional to the amount of repeat in nuclear DNA. When genome sizes are provided, scale legend is then included in the output.
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-org19d80a9" class="outline-3">
-<h3 id="org19d80a9"><span class="section-number-3">2.2</span> complete command line options:</h3>
+<div id="outline-container-org3e3de47" class="outline-3">
+<h3 id="org3e3de47"><span class="section-number-3">2.2</span> Complete command line options:</h3>
 <div class="outline-text-3" id="text-2-2">
 <div class="org-src-container">
 <pre class="src src-bash">Usage: ./plot_comparative_clustering_summary.R <span style="color: #707183;">[</span>options<span style="color: #707183;">]</span>
@@ -501,8 +506,8 @@ Options:
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="author">Author: petr</p>
-<p class="date">Created: 2019-12-11 St 15:02</p>
+<p class="author">Author: Petr Novak</p>
+<p class="date">Created: 2020-01-17 Pá 11:13</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

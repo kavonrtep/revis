@@ -141,11 +141,12 @@ convert -density 200 figs/example_genomic_abundances.pdf figs/example_genomic_ab
 Note that if option =-g= is used, non-nuclear sequences are always removed.
 
 [[./figs/example_genomic_abundances.png]]
-Size of block is directly proportional to the amount of repeat in nuclear DNA.
 
-** complete command line options:
+Size of block is directly proportional to the amount of repeat in nuclear DNA. When genome sizes are provided, scale legend is then included in the output.
 
-   #+begin_src bash :exports none :results value code 
+** Complete command line options:
+
+   #+begin_src bash :exports none :results value code
    ./plot_comparative_clustering_summary.R --help
    #+end_src
 
