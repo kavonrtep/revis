@@ -151,7 +151,7 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, RL, Xco
     }else{
       ## extra row for legends
 
-      print(c(title_height, 3,ncol(M)*0.8),ncol(M)*0.3)
+
       layout(matrix(c(0,0,0,3,0,2,0,3,0,1,0,3,0,0,0,4),ncol=4,byrow = TRUE),
              width=c(ploting_area_sides,ploting_area_width,ploting_area_sides, legend_width),
              height=c(title_height, 3,ncol(M)*0.8,ncol(M)*0.8 ))
@@ -167,7 +167,6 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, RL, Xco
       # use genomic sizes
       Mn3 = t(t(M) * (GS[colnames(M),] / params[[j]]$input_read_counts))[ord1,ord2]
       ## rescale
-      print(Mn3)
       MaxGS = max(Mn3)
       Mn3 = Mn3/max(Mn3)
       rectMap(Mn3,scale.by='none',col=params[[j]]$color[ord1], grid=TRUE)
