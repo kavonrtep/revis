@@ -182,18 +182,20 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, RL, Xco
   if (!any(is.na(GS))){
     ## plot GS scale
     par(xaxs='i', yaxs = 'i')
-    par(las=2,mar=c(4,0,0,1),cex.axis=0.5) # same par as recplot above to keep the scale
+    print(log(nrow(Mn3)))
+    par(las=2,mar=c(4,0,0,log(nrow(Mn3))),cex.axis=0.5) # same par as recplot above to keep the scale
     Mn3scale = Mn3
     Mn3scale[,] = 0
     colnames(Mn3scale)=rep("", ncol(Mn3scale))
     rownames(Mn3scale)=rep("", nrow(Mn3scale))
     Mn3scale[,1] = seq(0,1, length.out = nrow(Mn3))
+
     rectMap(Mn3scale,scale.by='none',col="grey", grid=FALSE, boxlab="", draw_box=FALSE)
     slabels = pretty(c(0,MaxGS), n = 10)
     sat = slabels/MaxGS * nrow(Mn3scale)
     axis(side=1, at= sat, labels = slabels, line = 0)
-    mtext(side = 1, text = "Repeat abundance \n(same units as provided genome sizes)", las=1, line=2.5,cex=0.4)
-    mtext(side = 2, text = "Rectangle height", las=1, line=2,cex=0.4, at=1)
+    mtext(side = 1, text = "Repeat abundance", las=1, line=2.5,cex=0.4)
+    mtext(side = 2, text = "Rectangle\n height", las=1, line=2,cex=0.4, at=1)
 
     axis(2, at=c(0.5, 1, 1.5), labels=c(0,0.5,1),line=0)
   }
@@ -252,7 +254,7 @@ option_list <- list(
                    species_code4   GenomeSize4
 
                 provide the same codes for species as in file COMPARATIVE_ANALYSIS_COUNTS.csv. The use of genome
-                sizes file imply the --nuclear_only option.
+                sizes file imply the --nuclear_only option. If genome sizes are used, genomic abundance scale is added.
     "),
   make_option(c("-n", "--nuclear_only"), default = FALSE, type="logical",
               action = "store_true",
