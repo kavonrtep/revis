@@ -173,7 +173,7 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, RL, Xco
     }
     par(las=2,mar=c(1,0,1,0), mgp = c(2,1,0))
     barplot(params[[j]]$annot$Size[ord1], col = 1)
-    mtext(side = 2, "Cluster size", las = 3, line = 2, cex = 0.5)
+    mtext(side = 2, "Cluster size", las = 3, line = 2.5, cex = 0.5)
     mtext(side=3, names(params)[j], las=0, line=1)
     plot.new()
     legend("topleft", col= params[[j]]$legend$color, legend=params[[j]]$legend$name, pch=15, cex=0.7, bty="n", pt.cex=1)
@@ -189,8 +189,7 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, RL, Xco
     colnames(Mn3scale)=rep("", ncol(Mn3scale))
     rownames(Mn3scale)=rep("", nrow(Mn3scale))
     Mn3scale[,1] = seq(0,1, length.out = nrow(Mn3))
-
-    rectMap(Mn3scale,scale.by='none',col="grey", grid=FALSE, boxlab="", draw_box=FALSE)
+    rectMap(Mn3scale,scale.by='none',col="grey", grid=FALSE, boxlab="", draw_box=FALSE, center=FALSE)
     slabels = pretty(c(0,MaxGS), n = 10)
     sat = slabels/MaxGS * nrow(Mn3scale)
     axis(side=1, at= sat, labels = slabels, line = 0)
@@ -202,7 +201,7 @@ plot_rect_map = function(read_counts,cluster_annotation, output_file,GS, RL, Xco
   st = dev.off()
 }
 
-rectMap=function(x,scale.by='row',col=1,xlab="",ylab="",grid=TRUE,axis_pos=c(1,4),boxlab = "Cluster Id", cexx=NULL,cexy=NULL, draw_box=TRUE){
+rectMap=function(x,scale.by='row',col=1,xlab="",ylab="",grid=TRUE,axis_pos=c(1,4),boxlab = "Cluster Id", cexx=NULL,cexy=NULL, draw_box=TRUE, center=TRUE){
   if (scale.by=='row'){
                                         #x=(x)/rowSums(x)
     x=(x)/apply(x,1,sum)
@@ -223,7 +222,11 @@ rectMap=function(x,scale.by='row',col=1,xlab="",ylab="",grid=TRUE,axis_pos=c(1,4
   #mtext(side = 2, "Proportions of individual samples", las =0, line = line, cex = 0.5)
   s=x/2
   w = c(x)/2
-  rect(coords[,1]-0.5,coords[,2]-s,coords[,1]+0.5,coords[,2]+s,col=col,border=NA)
+  if(center){
+    rect(coords[,1]-0.5,coords[,2]-s,coords[,1]+0.5,coords[,2]+s,col=col,border=NA)
+  }else{
+    rect(coords[,1]-0.5,coords[,2]-0.5,coords[,1]+0.5,coords[,2]+x-0.5,col=col,border=NA)
+  }
   if (grid){
     abline(v=0:(nr)+.5,h=0:(nc)+.5,lty=2,col="#60606030",lwd=0.2)
   }
@@ -232,7 +235,7 @@ rectMap=function(x,scale.by='row',col=1,xlab="",ylab="",grid=TRUE,axis_pos=c(1,4
   }
 }
 
-option_list <- list( 
+ option_list <- list( 
   make_option(c("-c", "--cluster_table"), default=NA, type = "character",
               help="file from RepeatExplorer2 clustering - CLUSTER_TABLE.csv"),
 
